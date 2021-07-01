@@ -5,12 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskmanager/data/models/user.dart';
 import 'package:taskmanager/data/network_service.dart';
+import 'package:taskmanager/data/notification_service.dart';
 
 class Auth with ChangeNotifier {
   final NetworkService api;
+  final NotificationService notificationService;
   User user = User(name: '', email: '', id: '', token: '');
 
-  Auth(this.api);
+  Auth(this.api, this.notificationService);
 
   bool get isAuth => user.token != '';
 
@@ -59,6 +61,7 @@ class Auth with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
       notifyListeners();
+      notificationService.cancelAllNotifications();
     } catch (error) {
       print(error);
     }
@@ -71,6 +74,7 @@ class Auth with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
       notifyListeners();
+      notificationService.cancelAllNotifications();
     } catch (error) {
       print(error);
     }

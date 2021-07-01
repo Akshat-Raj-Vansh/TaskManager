@@ -1,8 +1,12 @@
 //@dart=2.9
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:taskmanager/data/models/task.dart';
 import 'package:taskmanager/data/network_service.dart';
 import 'package:taskmanager/data/notification_service.dart';
 import 'package:taskmanager/data/providers/auth.dart';
@@ -16,8 +20,8 @@ import 'constants/colors.dart';
 import 'constants/strings.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await NotificationService().init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
   runApp(TaskManager(
     router: AppRouter(),
   ));
@@ -25,21 +29,21 @@ void main() async {
 
 class TaskManager extends StatelessWidget {
   final AppRouter router;
-
   const TaskManager({Key key, this.router}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    // NotificationService().showNotification('Hello');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Auth(NetworkService()),
+          create: (ctx) => Auth(NetworkService(), NotificationService()),
         ),
         ChangeNotifierProxyProvider<Auth, Tasks>(
-          create: (ctx) => Tasks(null, null, []),
+          create: (ctx) => Tasks(null, null, null, []),
           update: (ctx, auth, prevTasks) => Tasks(
             auth.user,
             auth.api,
+            NotificationService(),
             prevTasks == null ? [] : prevTasks.tasks,
           ),
         ),
@@ -63,10 +67,12 @@ class TaskManager extends StatelessWidget {
           home: auth.isAuth
               ? FutureBuilder(
                   future: Provider.of<Tasks>(ctx, listen: false).fetchTasks(),
-                  builder: (ctx, tasksSnapshot) =>
-                      tasksSnapshot.connectionState == ConnectionState.waiting
-                          ? SplashScreenUI()
-                          : CalendarTaskUI(),
+                  builder: (ctx, tasksSnapshot) {
+                    return tasksSnapshot.connectionState ==
+                            ConnectionState.waiting
+                        ? SplashScreenUI()
+                        : CalendarTaskUI();
+                  },
                 )
               : FutureBuilder(
                   future: auth.tryAutoLogin(),

@@ -26,13 +26,13 @@ class Task {
         title = json['title'],
         description = json['description'],
         completed = json['completed'],
-        date = DateTime.parse(json['createdAt']);
+        date = DateTime.parse(json['date']);
 
   Map toJson() => {
         '_id': id,
         'title': title,
         'description': description,
         'completed': completed,
-        'createdAt': date.toString(),
+        'date': date.toString(),
       };
 }
