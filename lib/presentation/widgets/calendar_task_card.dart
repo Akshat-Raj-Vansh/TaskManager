@@ -1,6 +1,5 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taskmanager/constants/colors.dart';
 import 'package:taskmanager/data/models/task.dart';
 
@@ -39,7 +38,8 @@ class TaskCard extends StatelessWidget {
               children: [
                 Text(
                   '${task.title}',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.w300,
                     color: Colors.white,
@@ -48,7 +48,8 @@ class TaskCard extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   task.description,
-                  style: GoogleFonts.poiretOne(
+                  style: TextStyle(
+                    fontFamily: 'PoiretOne',
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
                     color: Colors.white,

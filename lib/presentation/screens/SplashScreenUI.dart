@@ -1,7 +1,6 @@
 //@dart=2.9
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taskmanager/constants/colors.dart';
 
 class SplashScreenUI extends StatelessWidget {
@@ -21,7 +20,8 @@ class SplashScreenUI extends StatelessWidget {
               ),
               Text(
                 'Welcome',
-                style: GoogleFonts.montez(
+                style: TextStyle(
+                  fontFamily: 'Montez',
                   fontSize: 100.0,
                   color: kPrimaryColor,
                 ),

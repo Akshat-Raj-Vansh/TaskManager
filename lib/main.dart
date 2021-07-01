@@ -1,8 +1,10 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:taskmanager/data/network_service.dart';
+import 'package:taskmanager/data/notification_service.dart';
 import 'package:taskmanager/data/providers/auth.dart';
 import 'package:taskmanager/data/providers/tasks.dart';
 import 'package:taskmanager/presentation/router.dart';
@@ -13,7 +15,9 @@ import 'package:taskmanager/presentation/screens/SplashScreenUI.dart';
 import 'constants/colors.dart';
 import 'constants/strings.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await NotificationService().init();
   runApp(TaskManager(
     router: AppRouter(),
   ));
@@ -25,6 +29,7 @@ class TaskManager extends StatelessWidget {
   const TaskManager({Key key, this.router}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // NotificationService().showNotification('Hello');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -45,7 +50,7 @@ class TaskManager extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: kPrimaryColor,
-            accentColor: kSecondaryColor,
+            accentColor: kAccentColor,
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: kSecondaryColor,
               selectionColor: kAccentColor,
@@ -68,11 +73,7 @@ class TaskManager extends StatelessWidget {
                   builder: (ctx, authResultSnapshot) =>
                       authResultSnapshot.connectionState ==
                               ConnectionState.waiting
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: kAccentColor,
-                              ),
-                            )
+                          ? SplashScreenUI()
                           : LoginScreenUI(),
                 ),
           onGenerateRoute: router.generateRoute,

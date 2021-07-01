@@ -5,6 +5,7 @@ const hint_password = 'Password';
 
 const APP_NAME = 'Task Manager';
 const TASK_SCREEN_TITLE = 'Task Manager';
+const ICON_LOCATION = 'taskmanager_ui/assets/icon/checklist.png';
 
 // Routes
 const SPLASH_SCREEN_ROUTE = '/';
