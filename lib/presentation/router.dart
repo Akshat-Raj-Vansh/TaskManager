@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taskmanager/constants/colors.dart';
 import 'package:taskmanager/constants/strings.dart';
+import 'package:taskmanager/data/models/status.dart';
 import 'package:taskmanager/data/providers/auth.dart';
 import 'package:taskmanager/presentation/screens/CalendarTaskUI.dart';
 import 'package:taskmanager/presentation/screens/LoginScreenUI.dart';
@@ -19,7 +20,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => Consumer<Auth>(
             builder: (ctx, auth, _) => auth.isAuth
-                ? ProfileScreenUI()
+                ? ProfileScreenUI(status: settings.arguments as Status)
                 : FutureBuilder(
                     future: auth.tryAutoLogin(),
                     builder: (ctx, authResultSnapshot) => authResultSnapshot

@@ -7,13 +7,17 @@ import 'package:taskmanager/constants/strings.dart';
 import 'package:taskmanager/data/models/user.dart';
 import 'package:taskmanager/data/providers/auth.dart';
 import 'package:taskmanager/presentation/widgets/profile_button.dart';
-import 'package:taskmanager/presentation/widgets/profile_pic.dart';
+import 'package:taskmanager/presentation/widgets/profile_settings.dart';
+import 'package:taskmanager/presentation/widgets/profile_status.dart';
 
 class ProfileScreenUI extends StatelessWidget {
+  final status;
+  const ProfileScreenUI({Key key, this.status}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     User _user = Provider.of<Auth>(context, listen: false).user;
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -30,7 +34,7 @@ class ProfileScreenUI extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios),
           color: kPrimaryColor,
           onPressed: () {
-            Navigator.pushNamed(context, TASK_SCREEN_ROUTE);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -41,7 +45,7 @@ class ProfileScreenUI extends StatelessWidget {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           children: [
             Positioned(
-              top: size.height * 0.15,
+              top: size.height * 0.10,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
                 height: size.height * 0.85,
@@ -50,12 +54,14 @@ class ProfileScreenUI extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: size.height * 0.15 - size.width * 0.25,
-              left: size.width * 0.25,
-              child: ProfilePic(),
+              top: size.height * 0.10 - size.width * 0.15,
+              left: size.width * 0.30,
+              child: TasksStatus(
+                status: status,
+              ), // ProfilePic(),
             ),
             Positioned(
-              top: size.height * 0.15 + size.width * 0.25 + 30,
+              top: size.height * 0.10 + size.width * 0.15 + 30,
               child: SingleChildScrollView(
                 physics: ScrollPhysics(),
                 child: Container(
@@ -86,41 +92,52 @@ class ProfileScreenUI extends StatelessWidget {
                         },
                       ),
                       ProfileButton(
-                        text: 'Notifications',
-                        icon: Icons.notifications_active_outlined,
+                        text: 'Settings',
+                        icon: Icons.settings_outlined,
                         function: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Coming Soon!'),
-                              duration: Duration(seconds: 1),
-                            ),
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (_) {
+                              return GestureDetector(
+                                onTap: () {},
+                                behavior: HitTestBehavior.opaque,
+                                child: Settings(size: size),
+                              );
+                            },
                           );
                         },
                       ),
-                      ProfileButton(
-                        text: 'Alarms',
-                        icon: Icons.alarm_on_outlined,
-                        function: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Coming Soon!'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                      ),
-                      ProfileButton(
-                        text: 'Help Centre',
-                        icon: Icons.help_center_outlined,
-                        function: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Coming Soon!'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                      ),
+                      // ProfileButton(
+                      //   text: 'Help Centre',
+                      //   icon: Icons.help_center_outlined,
+                      //   function: () {
+                      //     showModalBottomSheet(
+                      //       context: context,
+                      //       backgroundColor: Colors.transparent,
+                      //       isScrollControlled: true,
+                      //       builder: (_) {
+                      //         return GestureDetector(
+                      //           onTap: () {
+                      //             Navigator.of(context).pop();
+                      //           },
+                      //           behavior: HitTestBehavior.opaque,
+                      //           child: Container(
+                      //             decoration: kBoxDecorationWhite,
+                      //             height: size.height * 0.3,
+                      //             child: Center(
+                      //               child: Text(
+                      //                 'Need some help?',
+                      //                 style: TextStyle(color: kPrimaryColor),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     );
+                      //   },
+                      // ),
                       ProfileButton(
                         function: () async {
                           await showDialog(
@@ -172,58 +189,6 @@ class ProfileScreenUI extends StatelessWidget {
                         },
                         text: 'Log Out',
                         icon: Icons.logout_outlined,
-                      ),
-                      ProfileButton(
-                        function: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(
-                                'Are you sure?',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: kPrimaryColor,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              content: Text(
-                                'Do you want to delete the account?',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  color: kPrimaryColor,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                  child: Text(
-                                    'No',
-                                    style: TextStyle(
-                                      color: kSecondaryColor,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Provider.of<Auth>(context, listen: false)
-                                        .delete();
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    'Yes',
-                                    style: TextStyle(
-                                      color: kSecondaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        text: 'Delete Account',
-                        icon: Icons.delete_forever_outlined,
                       ),
                     ],
                   ),

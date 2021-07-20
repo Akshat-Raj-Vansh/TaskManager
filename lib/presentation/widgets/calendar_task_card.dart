@@ -32,7 +32,7 @@ class TaskCard extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(left: 5, right: 5, top: 10),
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width * 0.80,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

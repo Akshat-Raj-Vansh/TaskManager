@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:taskmanager/constants/colors.dart';
 import 'package:taskmanager/constants/constraints.dart';
 import 'package:taskmanager/constants/strings.dart';
+import 'package:taskmanager/data/models/status.dart';
 import 'package:taskmanager/data/models/task.dart';
 import 'package:taskmanager/data/notification_service.dart';
 import 'package:taskmanager/data/providers/tasks.dart';
@@ -81,7 +83,7 @@ class _CalendarTaskUIState extends State<CalendarTaskUI> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => SystemNavigator.pop(),
                   child: Text(
                     'Yes',
                     style: TextStyle(
@@ -151,7 +153,13 @@ class _CalendarTaskUIState extends State<CalendarTaskUI> {
               color: kPrimaryColor,
               iconSize: 28.0,
               onPressed: () {
-                Navigator.pushNamed(context, PROFILE_SCREEN_ROUTE);
+                Navigator.pushNamed(
+                  context,
+                  PROFILE_SCREEN_ROUTE,
+                  arguments: Status(
+                      _taskList.where((task) => task.completed).length,
+                      _taskList.where((task) => !task.completed).length),
+                );
               },
             ),
           ],

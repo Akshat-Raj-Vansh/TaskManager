@@ -11,6 +11,13 @@ const kBoxDecorationWhite = BoxDecoration(
   ),
 );
 
+const kBoxDecorationStatus = BoxDecoration(
+  color: kColorWhite,
+  borderRadius: BorderRadius.all(
+    Radius.circular(40.0),
+  ),
+);
+
 const kBoxDecorationPrimary = BoxDecoration(
   color: kPrimaryColor,
   borderRadius: BorderRadius.only(

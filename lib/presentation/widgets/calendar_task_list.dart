@@ -1,11 +1,9 @@
 //@dart=2.9
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:taskmanager/data/models/task.dart';
-import 'package:taskmanager/data/notification_service.dart';
 import 'package:taskmanager/data/providers/tasks.dart';
 import 'package:taskmanager/presentation/widgets/calendar_background_edit.dart';
 import 'package:taskmanager/presentation/widgets/calendar_background_delete.dart';

@@ -1,5 +1,6 @@
 //@dart=2.9
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:taskmanager/constants/strings.dart';
 import 'package:http/http.dart' as http;
@@ -101,18 +102,23 @@ class NetworkService {
     }
   }
 
-  Future<User> avatar(String token) async {
+  Future<void> avatar(String token, String filepath) async {
+    // var bytes = image.readAsBytesSync();
     final url = Uri.parse(URL + '/users/me/avatar');
     try {
       final response = await http.post(
         url,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'image/png',
           'Authorization': token,
         },
+        body: {"avatar": filepath},
       );
+      // encoding: Encoding.getByName("utf-8"));
 
-      return User.fromRawJson(jsonDecode(response.body));
+      // return User.fromRawJson(jsonDecode(response.body));
+      print(response.body);
+      return response.body;
     } catch (error) {
       throw (error);
     }

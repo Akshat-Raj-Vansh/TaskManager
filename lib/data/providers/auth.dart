@@ -1,6 +1,7 @@
 //@dart=2.9
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskmanager/data/models/user.dart';
@@ -48,6 +49,15 @@ class Auth with ChangeNotifier {
   void profile() async {
     try {
       user = await api.profile(user.token);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  void avatar(String filepath) async {
+    try {
+      await api.avatar(user.token, filepath);
       notifyListeners();
     } catch (error) {
       print(error);
